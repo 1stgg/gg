@@ -13,8 +13,6 @@ func Log(itf ...interface{}) {
 
 func logs(itf ...interface{}) {
 
-	// fmt.Println(reflect.ValueOf(itf[0]).Field(0).Kind())
-	// return
 	for index, inter := range itf {
 		if index != 0 {
 			fmt.Printf(" ")
@@ -30,6 +28,8 @@ func logs(itf ...interface{}) {
 			fmt.Printf("%c[37;1m%s%c[0m", 0x1B, "nil", 0x1B) // white light
 			continue
 		}
+		logs2(reflect.ValueOf(inter))
+		return
 		kind := reflect.TypeOf(inter).Kind()
 
 		// fmt.Println(23, kind)
@@ -42,13 +42,8 @@ func logs(itf ...interface{}) {
 			fmt.Printf("%c[33m%f%c[0m", 0x1B, inter, 0x1B) // yellow
 		case kind == reflect.Array || kind == reflect.Slice: //reflect.Float32 <= kind &&
 			fmt.Printf("[ ")
-			// fmt.Println(24, reflect.TypeOf(i).Elem())
-			// fmt.Println(25, reflect.ValueOf(i).Len())
-
-			// fmt.Println(26, reflect.ValueOf(i).Index(0))
 			iValue := reflect.ValueOf(inter)
 			arrLen := iValue.Len()
-			// kindArr := reflect.TypeOf(i).Elem().Kind()
 			for i := 0; i < arrLen; i++ {
 				if i != 0 {
 					fmt.Printf(" ")
@@ -63,13 +58,9 @@ func logs(itf ...interface{}) {
 			fmt.Printf("%c[36m%s%c[0m", 0x1B, "[Function: "+funcName+"]", 0x1B) // cyan
 
 		case kind == reflect.Map: //reflect.Float32 <= kind &&
-
-			// fmt.Println(24, reflect.TypeOf(i).Elem())
-			// fmt.Println(25, reflect.ValueOf(i).Len())
 			fmt.Printf("{ ")
 			iValue := reflect.ValueOf(inter)
 			arrLen := iValue.Len()
-			// n := iValue.Len()
 			childKey := make([]reflect.Value, 0, arrLen)
 			childValue := make([]reflect.Value, 0, arrLen)
 			iter := iValue.MapRange()
@@ -85,13 +76,6 @@ func logs(itf ...interface{}) {
 				fmt.Printf(": ")
 				logs(childValue[i].Interface())
 			}
-			// kindArr := reflect.TypeOf(i).Elem().Kind()
-			// for i := 0; i < arrLen; i++ {
-			// 	if i != 0 {
-			// 		fmt.Printf(" ")
-			// 	}
-			// 	logs(iValue.Index(i).Interface())
-			// }
 			fmt.Printf(" }")
 
 		case kind == reflect.String:
@@ -100,26 +84,7 @@ func logs(itf ...interface{}) {
 		case kind <= reflect.Struct:
 
 			fmt.Printf("{ ")
-
-			// fmt.Println(93, reflect.TypeOf(inter).NumField())
-			// fmt.Println(93.11, reflect.ValueOf(inter).Field(1).Kind())
-			// fmt.Println(93.12, reflect.ValueOf(inter).Type().String())
-			// // logs(reflect.ValueOf(inter).Field(1))
-			// fmt.Println(93.1, reflect.ValueOf(inter).Field(0))
-			// fmt.Println(93.2, reflect.TypeOf(reflect.ValueOf(inter).Field(0)))
-			// fmt.Println(reflect.ValueOf(inter).Field(0).Type().String())
-			// fmt.Println(94, reflect.ValueOf(inter).Type().Field(0).Name)
-			// iValue := reflect.ValueOf(inter)
-			// fmt.Println(98, iValue)
 			arrLen := reflect.TypeOf(inter).NumField()
-			// fmt.Println(95)
-			// childKey := make([]reflect.Value, 0, arrLen)
-			// childValue := make([]reflect.Value, 0, arrLen)
-			// iter := iValue.MapRange()
-			// for iter.Next() {
-			// 	// childKey = append(childKey, iter.Key())
-			// 	childValue = append(childValue, iter.Value())
-			// }
 			for i := 0; i < arrLen; i++ {
 				if i != 0 {
 					fmt.Printf(", ")
@@ -129,64 +94,19 @@ func logs(itf ...interface{}) {
 				// fmt.Println(reflect.ValueOf(inter).Field(i))
 				logs2(reflect.ValueOf(inter).Field(i))
 			}
-			// for i, _ := range childKey {
-			// 	if i != 0 {
-			// 		fmt.Printf(", ")
-			// 	}
-			// 	// logs(childKey[i].Interface())
-			// 	fmt.Printf(": ")
-			// 	logs(childValue[i].Interface())
-			// }
-			// kindArr := reflect.TypeOf(i).Elem().Kind()
-			// for i := 0; i < arrLen; i++ {
-			// 	if i != 0 {
-			// 		fmt.Printf(" ")
-			// 	}
-			// 	logs(iValue.Index(i).Interface())
-			// }
 			fmt.Printf(" }")
 		default:
 
-			// switch i.(type) {
-			// case []bool:
-			// 	fmt.Println(46)
-			// case [2]bool:
-			// 	fmt.Println(48)
-			// }
-			// fmt.Println(50, kind, i)
-			// testIArr(i)
-			// fmt.Println(i)
 			fmt.Print(inter)
-			fmt.Sprintln()
+			// fmt.Sprintln()
 		}
 	}
 }
 
 func logs2(inter reflect.Value) {
 
-	// fmt.Println(reflect.ValueOf(itf[0]).Field(0).Kind())
-	// return
-	// for index, inter := range itf {
-	// 	if index != 0 {
-	// 		fmt.Printf(" ")
-	// 	}
 	kind := inter.Kind()
-	// switch inter.(type) {
-
-	// case reflect.Value:
-	// 	logs2(reflect.ValueOf(inter))
-	// 	continue
-	// }
-
-	// if inter == nil {
-	// 	fmt.Printf("%c[37;1m%s%c[0m", 0x1B, "nil", 0x1B) // white light
-	// 	continue
-	// }
-
-	// fmt.Println(186, kind)
-	// fmt.Println(187, inter.Kind())
-	// fmt.Printf("%c[32m%s%c[0m", 0x1B, `"`+inter.String()+`"`, 0x1B)
-	// return
+	// fmt.Println(109, kind)
 	switch {
 	case kind == reflect.Bool:
 		fmt.Printf("%c[33m%t%c[0m", 0x1B, inter, 0x1B) // yellow
@@ -196,32 +116,27 @@ func logs2(inter reflect.Value) {
 		fmt.Printf("%c[33m%f%c[0m", 0x1B, inter, 0x1B) // yellow
 	case kind == reflect.Array || kind == reflect.Slice: //reflect.Float32 <= kind &&
 		fmt.Printf("[ ")
-		// fmt.Println(24, reflect.TypeOf(i).Elem())
-		// fmt.Println(25, reflect.ValueOf(i).Len())
-
-		// fmt.Println(26, reflect.ValueOf(i).Index(0))
-		iValue := reflect.ValueOf(inter)
+		iValue := (inter)
 		arrLen := iValue.Len()
-		// kindArr := reflect.TypeOf(i).Elem().Kind()
 		for i := 0; i < arrLen; i++ {
 			if i != 0 {
 				fmt.Printf(" ")
 			}
-			logs(iValue.Index(i).Interface())
+			logs2(iValue.Index(i))
 		}
 		fmt.Printf(" ]")
 	case kind == reflect.Chan || kind == reflect.Ptr || kind == reflect.UnsafePointer:
 		fmt.Printf("%p", inter)
 	case kind == reflect.Func:
-		funcName := runtime.FuncForPC(reflect.ValueOf(inter).Pointer()).Name()
+		funcName := runtime.FuncForPC((inter).Pointer()).Name()
 		fmt.Printf("%c[36m%s%c[0m", 0x1B, "[Function: "+funcName+"]", 0x1B) // cyan
 
 	case kind == reflect.Map: //reflect.Float32 <= kind &&
 
-		// fmt.Println(24, reflect.TypeOf(i).Elem())
-		// fmt.Println(25, reflect.ValueOf(i).Len())
+		// fmt.Println(24, (i).Elem())
+		// fmt.Println(25, (i).Len())
 		fmt.Printf("{ ")
-		iValue := reflect.ValueOf(inter)
+		iValue := (inter)
 		arrLen := iValue.Len()
 		// n := iValue.Len()
 		childKey := make([]reflect.Value, 0, arrLen)
@@ -235,82 +150,35 @@ func logs2(inter reflect.Value) {
 			if i != 0 {
 				fmt.Printf(", ")
 			}
-			logs(childKey[i].Interface())
+			logs2(childKey[i])
 			fmt.Printf(": ")
-			logs(childValue[i].Interface())
+			logs2(childValue[i])
 		}
-		// kindArr := reflect.TypeOf(i).Elem().Kind()
-		// for i := 0; i < arrLen; i++ {
-		// 	if i != 0 {
-		// 		fmt.Printf(" ")
-		// 	}
-		// 	logs(iValue.Index(i).Interface())
-		// }
 		fmt.Printf(" }")
 
 	case kind == reflect.String:
 		fmt.Printf("%c[32m%s%c[0m", 0x1B, `"`+inter.String()+`"`, 0x1B) // green
 
 	case kind <= reflect.Struct:
-
+		// fmt.Println(163, (inter).Field(1).Kind())
 		fmt.Printf("{ ")
-
-		// fmt.Println(93, reflect.TypeOf(inter).NumField())
-		// fmt.Println(93.11, reflect.ValueOf(inter).Field(1).Kind())
-		// fmt.Println(93.12, reflect.ValueOf(inter).Type().String())
-		// // logs(reflect.ValueOf(inter).Field(1))
-		// fmt.Println(93.1, reflect.ValueOf(inter).Field(0))
-		// fmt.Println(93.2, reflect.TypeOf(reflect.ValueOf(inter).Field(0)))
-		// fmt.Println(reflect.ValueOf(inter).Field(0).Type().String())
-		// fmt.Println(94, reflect.ValueOf(inter).Type().Field(0).Name)
-		// iValue := reflect.ValueOf(inter)
-		// fmt.Println(98, iValue)
-		arrLen := reflect.TypeOf(inter).NumField()
-		// fmt.Println(95)
-		// childKey := make([]reflect.Value, 0, arrLen)
-		// childValue := make([]reflect.Value, 0, arrLen)
-		// iter := iValue.MapRange()
-		// for iter.Next() {
-		// 	// childKey = append(childKey, iter.Key())
-		// 	childValue = append(childValue, iter.Value())
-		// }
+		arrLen := (inter).NumField()
+		fmt.Println(166, arrLen)
 		for i := 0; i < arrLen; i++ {
 			if i != 0 {
 				fmt.Printf(", ")
 			}
-			// logs(childKey[i].Interface())
-			fmt.Printf("%s: ", reflect.ValueOf(inter).Type().Field(i).Name)
-			logs2(reflect.ValueOf(inter).Field(i))
+			// logs2(childKey[i])
+			// fmt.Println(172, (inter).Field(i))
+			fmt.Printf("%s: ", inter.Type().Field(i).Name)
+			// fmt.Println(174, inter)
+			logs2(inter.Field(i))
+			// fmt.Println(176)
 		}
-		// for i, _ := range childKey {
-		// 	if i != 0 {
-		// 		fmt.Printf(", ")
-		// 	}
-		// 	// logs(childKey[i].Interface())
-		// 	fmt.Printf(": ")
-		// 	logs(childValue[i].Interface())
-		// }
-		// kindArr := reflect.TypeOf(i).Elem().Kind()
-		// for i := 0; i < arrLen; i++ {
-		// 	if i != 0 {
-		// 		fmt.Printf(" ")
-		// 	}
-		// 	logs(iValue.Index(i).Interface())
-		// }
+		// fmt.Println(178)
 		fmt.Printf(" }")
 	default:
-
-		// switch i.(type) {
-		// case []bool:
-		// 	fmt.Println(46)
-		// case [2]bool:
-		// 	fmt.Println(48)
-		// }
-		// fmt.Println(50, kind, i)
-		// testIArr(i)
-		// fmt.Println(i)
 		fmt.Print(inter)
-		fmt.Sprintln()
 	}
 	// }
 }

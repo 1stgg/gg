@@ -55,6 +55,7 @@ func main() {
 		// map[int]string{1: "b"},
 		// map[string]int{"b": 1},
 		book,
+		233,
 		// book.title,
 		// [2]int{1, 2},
 		// map[string]int{"a": 1, "b": 2},
