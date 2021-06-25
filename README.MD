@@ -15,7 +15,9 @@ gg.Log(arg,arg2,arg3...)
 |Int,Float,Complex|黄色|<span style="color:yellow;">1</span>|
 |String|绿色|<span style="color:green;">"string"</span>|
 |Func|青色|<span style="color:#3eb1d5;">[Function: main.main.func1]</span>|
+|Array,Slice||<span style="color:white;">[ <span style="color:green;">"string"</span>  <span style="color:green;">"string"</span> ] [ <span style="color:yellow;">1</span> <span style="color:yellow;">1</span> ]|
 |Map||<span style="color:white;">{ <span style="color:green;">"string"</span>: <span style="color:green;">"string"</span> } { <span style="color:yellow;">1</span>: <span style="color:green;">"string"</span> } { <span style="color:green;">"string"</span>: <span style="color:yellow;">1</span> }</span>|
+|Struct||{ title: <span style="color:green;">""标题"</span>, id: <span style="color:yellow;">1</span>, page: { num: <span style="color:yellow;">1</span> } }|
 |Interface||按值类型打印|
 |Others|白色|<span style="color:white;">0xc000076060</span>|
 

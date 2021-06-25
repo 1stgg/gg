@@ -17,96 +17,21 @@ func logs(itf ...interface{}) {
 		if index != 0 {
 			fmt.Printf(" ")
 		}
-		switch inter.(type) {
-
-		case reflect.Value:
-			logs2(reflect.ValueOf(inter))
-			continue
-		}
 
 		if inter == nil {
 			fmt.Printf("%c[37;1m%s%c[0m", 0x1B, "nil", 0x1B) // white light
 			continue
 		}
 		logs2(reflect.ValueOf(inter))
-		return
-		kind := reflect.TypeOf(inter).Kind()
-
-		// fmt.Println(23, kind)
-		switch {
-		case kind == reflect.Bool:
-			fmt.Printf("%c[33m%t%c[0m", 0x1B, inter, 0x1B) // yellow
-		case kind <= reflect.Uintptr: //reflect.Int <= kind &&
-			fmt.Printf("%c[33m%d%c[0m", 0x1B, inter, 0x1B) // yellow
-		case kind <= reflect.Complex128: //reflect.Float32 <= kind &&
-			fmt.Printf("%c[33m%f%c[0m", 0x1B, inter, 0x1B) // yellow
-		case kind == reflect.Array || kind == reflect.Slice: //reflect.Float32 <= kind &&
-			fmt.Printf("[ ")
-			iValue := reflect.ValueOf(inter)
-			arrLen := iValue.Len()
-			for i := 0; i < arrLen; i++ {
-				if i != 0 {
-					fmt.Printf(" ")
-				}
-				logs(iValue.Index(i).Interface())
-			}
-			fmt.Printf(" ]")
-		case kind == reflect.Chan || kind == reflect.Ptr || kind == reflect.UnsafePointer:
-			fmt.Printf("%p", inter)
-		case kind == reflect.Func:
-			funcName := runtime.FuncForPC(reflect.ValueOf(inter).Pointer()).Name()
-			fmt.Printf("%c[36m%s%c[0m", 0x1B, "[Function: "+funcName+"]", 0x1B) // cyan
-
-		case kind == reflect.Map: //reflect.Float32 <= kind &&
-			fmt.Printf("{ ")
-			iValue := reflect.ValueOf(inter)
-			arrLen := iValue.Len()
-			childKey := make([]reflect.Value, 0, arrLen)
-			childValue := make([]reflect.Value, 0, arrLen)
-			iter := iValue.MapRange()
-			for iter.Next() {
-				childKey = append(childKey, iter.Key())
-				childValue = append(childValue, iter.Value())
-			}
-			for i, _ := range childKey {
-				if i != 0 {
-					fmt.Printf(", ")
-				}
-				logs(childKey[i].Interface())
-				fmt.Printf(": ")
-				logs(childValue[i].Interface())
-			}
-			fmt.Printf(" }")
-
-		case kind == reflect.String:
-			fmt.Printf("%c[32m%s%c[0m", 0x1B, `"`+inter.(string)+`"`, 0x1B) // green
-
-		case kind <= reflect.Struct:
-
-			fmt.Printf("{ ")
-			arrLen := reflect.TypeOf(inter).NumField()
-			for i := 0; i < arrLen; i++ {
-				if i != 0 {
-					fmt.Printf(", ")
-				}
-				// logs(childKey[i].Interface())
-				fmt.Printf("%s: ", reflect.ValueOf(inter).Type().Field(i).Name)
-				// fmt.Println(reflect.ValueOf(inter).Field(i))
-				logs2(reflect.ValueOf(inter).Field(i))
-			}
-			fmt.Printf(" }")
-		default:
-
-			fmt.Print(inter)
-			// fmt.Sprintln()
-		}
 	}
 }
 
 func logs2(inter reflect.Value) {
 
 	kind := inter.Kind()
+
 	// fmt.Println(109, kind)
+
 	switch {
 	case kind == reflect.Bool:
 		fmt.Printf("%c[33m%t%c[0m", 0x1B, inter, 0x1B) // yellow
@@ -126,7 +51,8 @@ func logs2(inter reflect.Value) {
 		}
 		fmt.Printf(" ]")
 	case kind == reflect.Chan || kind == reflect.Ptr || kind == reflect.UnsafePointer:
-		fmt.Printf("%p", inter)
+		// fmt.Printf("%p", inter)
+		fmt.Print(inter)
 	case kind == reflect.Func:
 		funcName := runtime.FuncForPC((inter).Pointer()).Name()
 		fmt.Printf("%c[36m%s%c[0m", 0x1B, "[Function: "+funcName+"]", 0x1B) // cyan
@@ -163,7 +89,7 @@ func logs2(inter reflect.Value) {
 		// fmt.Println(163, (inter).Field(1).Kind())
 		fmt.Printf("{ ")
 		arrLen := (inter).NumField()
-		fmt.Println(166, arrLen)
+		// fmt.Println(166, arrLen)
 		for i := 0; i < arrLen; i++ {
 			if i != 0 {
 				fmt.Printf(", ")
