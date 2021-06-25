@@ -41,28 +41,24 @@ func main() {
 
 	// var a interface{}
 	// a = "6"
-	book := Books{"标题", 1, Page{1, "content"}}
-	// fmt.Println(reflect.ValueOf(book))
-	// fmt.Println(reflect.ValueOf(book).Field(0))
-	// fmt.Println("")
+	// book := Books{"标题", 1, Page{1, "content"}}
+
 	gg.Log(
 		// []bool{true, false},
-		// [2]string{"1", "false"},
-		// make(chan int),
-		// func() {},
+		[2]string{"1", "false"},
+		make(chan int),
+		func() {},
 		// a,
 		// map[string]string{"a": "b", "c": "d"},
 		// map[int]string{1: "b"},
 		// map[string]int{"b": 1},
-		book,
-		233,
-		// book.title,
+		// book,
+		// // book.title,
 		// [2]int{1, 2},
 		// map[string]int{"a": 1, "b": 2},
 		// make(map[string]int),
 		// []int{1, 2, 3},
 		// []float32{1, 2, 3},
-		// fmt.Println()
 	)
 
 	// for i := 0; i < 10; i++ {
