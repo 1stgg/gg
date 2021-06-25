@@ -51,20 +51,15 @@ func logs2(inter reflect.Value) {
 		}
 		fmt.Printf(" ]")
 	case kind == reflect.Chan || kind == reflect.Ptr || kind == reflect.UnsafePointer:
-		// fmt.Printf("%p", inter)
 		fmt.Print(inter)
 	case kind == reflect.Func:
 		funcName := runtime.FuncForPC((inter).Pointer()).Name()
 		fmt.Printf("%c[36m%s%c[0m", 0x1B, "[Function: "+funcName+"]", 0x1B) // cyan
 
 	case kind == reflect.Map: //reflect.Float32 <= kind &&
-
-		// fmt.Println(24, (i).Elem())
-		// fmt.Println(25, (i).Len())
 		fmt.Printf("{ ")
 		iValue := (inter)
 		arrLen := iValue.Len()
-		// n := iValue.Len()
 		childKey := make([]reflect.Value, 0, arrLen)
 		childValue := make([]reflect.Value, 0, arrLen)
 		iter := iValue.MapRange()
@@ -86,7 +81,6 @@ func logs2(inter reflect.Value) {
 		fmt.Printf("%c[32m%s%c[0m", 0x1B, `"`+inter.String()+`"`, 0x1B) // green
 
 	case kind <= reflect.Struct:
-		// fmt.Println(163, (inter).Field(1).Kind())
 		fmt.Printf("{ ")
 		arrLen := (inter).NumField()
 		// fmt.Println(166, arrLen)
@@ -94,14 +88,9 @@ func logs2(inter reflect.Value) {
 			if i != 0 {
 				fmt.Printf(", ")
 			}
-			// logs2(childKey[i])
-			// fmt.Println(172, (inter).Field(i))
 			fmt.Printf("%s: ", inter.Type().Field(i).Name)
-			// fmt.Println(174, inter)
 			logs2(inter.Field(i))
-			// fmt.Println(176)
 		}
-		// fmt.Println(178)
 		fmt.Printf(" }")
 	default:
 		fmt.Print(inter)
@@ -132,93 +121,3 @@ func testIArr(iArr []interface{}) {
 // 8 不可见
 // %c[{前景色（文字颜色）};{背景色}{;前景色2，可选}m
 // fmt.Printf("%c[32;32;1m%s%c[0m\n\n", 0x1B, "testPrintColor", 0x1B)
-func logNil() {
-
-	fmt.Printf("%c[37;1m%s%c[0m", 0x1B, "nil", 0x1B)
-}
-func logFunc(arg interface{}) {
-	funcName := runtime.FuncForPC(reflect.ValueOf(arg).Pointer()).Name()
-	ret := "[Function: " + funcName + "]"
-	fmt.Printf("%c[36m%s%c[0m", 0x1B, ret, 0x1B)
-}
-func logBool(arg bool) {
-	fmt.Printf("%c[33m%t%c[0m", 0x1B, arg, 0x1B)
-}
-func logInt(arg int) {
-	fmt.Printf("%c[33m%d%c[0m", 0x1B, arg, 0x1B)
-}
-func logStr(arg string) {
-	fmt.Printf("%c[32m%s%c[0m", 0x1B, `"`+arg+`"`, 0x1B)
-}
-func logArrInt(arg []int) {
-	fmt.Printf("%s", `[ `)
-	for index, item := range arg {
-		// logs(key)
-		if index != 0 {
-			fmt.Printf("%s", `, `)
-		}
-
-		logs(item)
-	}
-	fmt.Printf("%s", ` ]`)
-}
-func logArrStr(arg []string) {
-	fmt.Printf("%s", `[ `)
-	for index, item := range arg {
-		// logs(key)
-		if index != 0 {
-			fmt.Printf("%s", `, `)
-		}
-
-		logs(item)
-	}
-	fmt.Printf("%s", ` ]`)
-}
-func logMapStrStr(arg map[string]string) {
-	fmt.Printf("%s", `{ `)
-	isFirst := true
-	for key, item := range arg {
-
-		if !isFirst {
-
-			fmt.Printf("%s", `, `)
-		}
-		isFirst = false
-		logs(key)
-		fmt.Printf("%s", `: `)
-		logs(item)
-	}
-	fmt.Printf("%s", ` }`)
-}
-func logMapStrInt(arg map[string]int) {
-	fmt.Printf("%s", `{ `)
-	isFirst := true
-	for key, item := range arg {
-
-		if !isFirst {
-
-			fmt.Printf("%s", `, `)
-		}
-		isFirst = false
-		logs(key)
-		fmt.Printf("%s", `: `)
-		logs(item)
-	}
-	fmt.Printf("%s", ` }`)
-}
-func logMapIntStr(arg map[int]string) {
-	fmt.Printf("%s", `{ `)
-	isFirst := true
-	for key, item := range arg {
-
-		if !isFirst {
-
-			fmt.Printf("%s", `, `)
-		}
-		isFirst = false
-		logs(key)
-		fmt.Printf("%s", `: `)
-		logs(item)
-	}
-	fmt.Printf("%s", ` }`)
-}
