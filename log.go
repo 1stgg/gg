@@ -7,12 +7,7 @@ import (
 )
 
 func Log(itf ...interface{}) {
-	logs(itf...)
-	fmt.Printf("\n")
-}
-
-func logs(itf ...interface{}) {
-
+	// logs(itf...)
 	for index, inter := range itf {
 		if index != 0 {
 			fmt.Printf(" ")
@@ -22,24 +17,24 @@ func logs(itf ...interface{}) {
 			fmt.Printf("%c[37;1m%s%c[0m", 0x1B, "nil", 0x1B) // white light
 			continue
 		}
-		logs2(reflect.ValueOf(inter))
+		logs(reflect.ValueOf(inter))
 	}
+	fmt.Printf("\n")
 }
 
-func logs2(inter reflect.Value) {
+func logs(inter reflect.Value) {
 
 	kind := inter.Kind()
 
 	// fmt.Println(109, kind)
 
-	switch {
-	case kind == reflect.Bool:
+	switch kind {
+	case reflect.Bool:
 		fmt.Printf("%c[33m%t%c[0m", 0x1B, inter, 0x1B) // yellow
-	case kind <= reflect.Uintptr: //reflect.Int <= kind &&
-		fmt.Printf("%c[33m%d%c[0m", 0x1B, inter, 0x1B) // yellow
-	case kind <= reflect.Complex128: //reflect.Float32 <= kind &&
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr: //reflect.Int <= kind &		fmt.Printf("%c[33m%d%c[0m", 0x1B, inter, 0x1B) // yellow
+	case reflect.Float32, reflect.Float64, reflect.Complex64, reflect.Complex128: //reflect.Float32 <= kind &&
 		fmt.Printf("%c[33m%f%c[0m", 0x1B, inter, 0x1B) // yellow
-	case kind == reflect.Array || kind == reflect.Slice: //reflect.Float32 <= kind &&
+	case reflect.Array, reflect.Slice: //reflect.Float32 <= kind &&
 		fmt.Printf("[ ")
 		iValue := (inter)
 		arrLen := iValue.Len()
@@ -47,16 +42,16 @@ func logs2(inter reflect.Value) {
 			if i != 0 {
 				fmt.Printf(" ")
 			}
-			logs2(iValue.Index(i))
+			logs(iValue.Index(i))
 		}
 		fmt.Printf(" ]")
-	case kind == reflect.Chan || kind == reflect.Ptr || kind == reflect.UnsafePointer:
+	case reflect.Chan, reflect.Ptr, reflect.UnsafePointer:
 		fmt.Print(inter)
-	case kind == reflect.Func:
+	case reflect.Func:
 		funcName := runtime.FuncForPC((inter).Pointer()).Name()
 		fmt.Printf("%c[36m%s%c[0m", 0x1B, "[Function: "+funcName+"]", 0x1B) // cyan
 
-	case kind == reflect.Map: //reflect.Float32 <= kind &&
+	case reflect.Map: //reflect.Float32 <= kind &&
 		fmt.Printf("{ ")
 		iValue := (inter)
 		arrLen := iValue.Len()
@@ -71,16 +66,16 @@ func logs2(inter reflect.Value) {
 			if i != 0 {
 				fmt.Printf(", ")
 			}
-			logs2(childKey[i])
+			logs(childKey[i])
 			fmt.Printf(": ")
-			logs2(childValue[i])
+			logs(childValue[i])
 		}
 		fmt.Printf(" }")
 
-	case kind == reflect.String:
+	case reflect.String:
 		fmt.Printf("%c[32m%s%c[0m", 0x1B, `"`+inter.String()+`"`, 0x1B) // green
 
-	case kind <= reflect.Struct:
+	case reflect.Struct:
 		fmt.Printf("{ ")
 		arrLen := (inter).NumField()
 		// fmt.Println(166, arrLen)
@@ -89,7 +84,7 @@ func logs2(inter reflect.Value) {
 				fmt.Printf(", ")
 			}
 			fmt.Printf("%s: ", inter.Type().Field(i).Name)
-			logs2(inter.Field(i))
+			logs(inter.Field(i))
 		}
 		fmt.Printf(" }")
 	default:
