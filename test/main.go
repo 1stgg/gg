@@ -17,26 +17,26 @@ type Books struct {
 
 func main() {
 	// gg.Log(nil, false)
-	// gg.Log(
-	// 	1,
-	// 	int8(2),
-	// 	int16(3),
-	// 	int32(4),
-	// 	int64(5),
-	// 	uint(6),
-	// 	uint8(6),
-	// 	uint16(6),
-	// 	uint32(6),
-	// 	uint64(6),
-	// 	uintptr(6),
-	// )
-	// gg.Log(
-	// 	float32(6),
-	// 	float64(6),
-	// 	complex(1, 2),
-	// 	complex64(1),
-	// 	complex128(1),
-	// )
+	gg.Log(
+		1,
+		int8(2),
+		int16(3),
+		int32(4),
+		int64(5),
+		uint(6),
+		uint8(6),
+		uint16(6),
+		uint32(6),
+		uint64(6),
+		uintptr(6),
+	)
+	gg.Log(
+		float32(6),
+		float64(6),
+		complex(1, 2),
+		complex64(1),
+		complex128(1),
+	)
 	// fmt.Println(Animal)
 
 	// var a interface{}

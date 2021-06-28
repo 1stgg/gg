@@ -32,6 +32,7 @@ func logs(inter reflect.Value) {
 	case reflect.Bool:
 		fmt.Printf("%c[33m%t%c[0m", 0x1B, inter, 0x1B) // yellow
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr: //reflect.Int <= kind &		fmt.Printf("%c[33m%d%c[0m", 0x1B, inter, 0x1B) // yellow
+		fmt.Printf("%c[33m%d%c[0m", 0x1B, inter, 0x1B) // yellow
 	case reflect.Float32, reflect.Float64, reflect.Complex64, reflect.Complex128: //reflect.Float32 <= kind &&
 		fmt.Printf("%c[33m%f%c[0m", 0x1B, inter, 0x1B) // yellow
 	case reflect.Array, reflect.Slice: //reflect.Float32 <= kind &&
